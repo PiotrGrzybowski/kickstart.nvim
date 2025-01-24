@@ -582,7 +582,17 @@ require('lazy').setup({
             },
           },
         },
-        pyright = {},
+
+        pyright = {
+          -- Using Ruff's import organizer
+          disableOrganizeImports = true,
+        },
+        python = {
+          analysis = {
+            -- Ignore all files for analysis to exclusively use Ruff for linting
+            ignore = { '*' },
+          },
+        },
         -- ruff_lsp = {
         --   init_options = {
         --     settings = {
@@ -590,7 +600,16 @@ require('lazy').setup({
         --     },
         --   },
         -- },
-        -- clangd = {},
+        clangd = {
+          -- cmd = { 'clangd', '--offset-encoding=utf-16', '--fallback-style=webkit' },
+          cmd = {
+            'clangd',
+            '--fallback-style=webkit',
+            '--offset-encoding=utf-16',
+          },
+        },
+        -- clang_format = {},
+
         -- gopls = {},
         rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -678,7 +697,10 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'ruff_format', 'ruff_fix' },
+        cpp = { 'clang-format' },
+        rust = { 'rustfmt' },
+
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },

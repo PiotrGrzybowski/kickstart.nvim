@@ -15,6 +15,7 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    -- 'codelldb'
 
     'mfussenegger/nvim-dap-python',
   },
