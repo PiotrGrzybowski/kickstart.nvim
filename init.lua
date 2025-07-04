@@ -117,10 +117,10 @@ vim.opt.showmode = false
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
-end)
+-- vim.schedule(function()
+-- end)
 
+vim.opt.clipboard = 'unnamedplus'
 -- Enable break indent
 vim.opt.breakindent = true
 
@@ -600,6 +600,7 @@ require('lazy').setup({
         --     },
         --   },
         -- },
+        astro = {},
         clangd = {
           -- cmd = { 'clangd', '--offset-encoding=utf-16', '--fallback-style=webkit' },
           cmd = {
@@ -632,6 +633,15 @@ require('lazy').setup({
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               -- diagnostics = { disable = { 'missing-fields' } },
+            },
+          },
+        },
+        texlab = {
+          root_dir = require('lspconfig.util').root_pattern('.latexroot', 'main.tex', '.git'),
+          settings = {
+            texlab = {
+              auxDirectory = 'build',
+              build = { onSave = false },
             },
           },
         },
@@ -690,7 +700,7 @@ require('lazy').setup({
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
         return {
-          timeout_ms = 500,
+          timeout_ms = 5000,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
@@ -700,6 +710,8 @@ require('lazy').setup({
         python = { 'ruff_format', 'ruff_fix' },
         cpp = { 'clang-format' },
         rust = { 'rustfmt' },
+        astro = { 'prettier', stop_after_first = true },
+        javascript = { 'prettier', stop_after_first = true },
 
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
