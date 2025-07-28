@@ -155,6 +155,15 @@ vim.o.splitbelow = true
 --   and `:help lua-options-guide`
 vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'tex', 'latex', 'plaintex' },
+  callback = function()
+    vim.opt_local.expandtab = true
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+  end,
+})
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
@@ -164,6 +173,22 @@ vim.o.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.o.scrolloff = 10
+
+-- Use spaces instead of tabs
+vim.o.expandtab = true
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+
+-- Lua files use 2 spaces
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'lua',
+  callback = function()
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+  end,
+})
 
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
