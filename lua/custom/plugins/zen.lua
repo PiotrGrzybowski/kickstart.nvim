@@ -4,7 +4,7 @@ return {
     plugins = {
       alacritty = {
         enabled = true,
-        font = '24', -- font size
+        font = '20', -- font size
       },
     },
   },
