@@ -741,11 +741,17 @@ require('lazy').setup({
         pyright = {
           -- Using Ruff's import organizer
           disableOrganizeImports = true,
+          disableLanguageServices = false, -- keep LSP features ON
+
+          -- This is the key:
+          disableDiagnostics = true,
         },
         python = {
           analysis = {
             -- Ignore all files for analysis to exclusively use Ruff for linting
+            typeCheckingMode = 'off',
             ignore = { '*' },
+            diagnosticMode = 'off',
           },
         },
         -- ruff_lsp = {
