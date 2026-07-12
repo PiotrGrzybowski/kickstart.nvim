@@ -90,6 +90,47 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
-    require('dap-python').setup 'python'
+    -- Adapter (debugpy) runs independently from the Mason install, so it always
+    -- has debugpy regardless of which project .venv we debug.
+    require('dap-python').setup(vim.fn.expand '~/.local/share/nvim/mason/packages/debugpy/venv/bin/python')
+
+    -- ===== multi-env Python debugging =====
+    -- The program is launched with the project's .venv interpreter (resolved per
+    -- file at launch time); the adapter above injects debugpy into it, so the
+    -- project venv does NOT need debugpy installed.
+    dap.configurations.python = dap.configurations.python or {}
+
+    -- Pick the interpreter for the file being debugged:
+    --   1) nearest ancestor .venv of the current file, else
+    --   2) an activated venv ($VIRTUAL_ENV), else
+    --   3) plain `python`
+    local function project_python()
+      local root = vim.fs.root(vim.fn.expand '%:p:h', '.venv')
+      if root and vim.fn.filereadable(root .. '/.venv/bin/python') == 1 then
+        return root .. '/.venv/bin/python'
+      end
+      local venv = os.getenv 'VIRTUAL_ENV'
+      if venv and venv ~= '' then
+        return venv .. '/bin/python'
+      end
+      return 'python'
+    end
+
+    -- Prompt for CLI args; split on spaces (empty input = no args)
+    local function prompt_args()
+      return vim.split(vim.fn.input 'Script args: ', ' ', { trimempty = true })
+    end
+
+    table.insert(dap.configurations.python, 1, {
+      type = 'python',
+      request = 'launch',
+      name = '▶ Launch file (.venv + args)',
+      program = '${file}',
+      args = prompt_args,
+      pythonPath = project_python, -- runs YOUR program under the project venv
+      console = 'integratedTerminal', -- required so args / stdin / live stdout work
+      cwd = '${workspaceFolder}',
+      justMyCode = false, -- step into library code (e.g. agent_framework) too
+    })
   end,
 }
