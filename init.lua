@@ -154,7 +154,7 @@ vim.o.splitbelow = true
 --   See `:help lua-options`
 --   and `:help lua-options-guide`
 vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'tex', 'latex', 'plaintex' },
   callback = function()
@@ -772,7 +772,7 @@ require('lazy').setup({
         },
         -- clang_format = {},
 
-        -- gopls = {},
+        gopls = {},
         rust_analyzer = {},
         terraformls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -878,7 +878,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'ruff_format', 'ruff_fix' },
+        python = { 'ruff_organize_imports', 'ruff_format' },
         cpp = { 'clang-format' },
         rust = { 'rustfmt' },
         astro = { 'prettier', stop_after_first = true },
